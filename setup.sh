@@ -15,7 +15,7 @@ fi
 
 colorize() {
     if [ ! -z "${TPUT}" ]; then
-        tput "$@"
+        tput "$@" 2> /dev/null
     fi
 }
 
