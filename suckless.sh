@@ -13,7 +13,7 @@ sl_install()
   gzip -dc "$HOME"/tool/src/"$tfile" | tar -xf -
   cd "$target"
   if [ -e st.c ]; then
-    patch -r - -p0 << EOT
+    patch -u -r - -p0 << EOT
 --- config.def.h        2013-04-20 09:29:39.000000000 -0400
 +++ config.def.h.new    2013-10-30 10:11:59.287727715 -0400
 @@ -5,7 +5,7 @@
@@ -25,10 +25,19 @@ sl_install()
  static int borderpx = 2;
  static char shell[] = "/bin/sh";
 
+@@ -21,7 +21,7 @@
+ static unsigned int actionfps = 30;
+
+ /* TERM value */
+-static char termname[] = "st-256color";
++static char termname[] = "xterm-color";
+
+ static unsigned int tabspaces = 8;
+
 EOT
   else if [ -e wmname.c ]; then
     if [ -d /usr/local/include/X11 ]; then
-      patch -r - -p0 << EOT
+      patch -u -r - -p0 << EOT
 --- config.mk	2008-08-02 14:36:10.000000000 -0400
 +++ config.mk.new	2013-11-06 20:42:20.000000000 -0500
 @@ -7,8 +7,8 @@
