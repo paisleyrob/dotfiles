@@ -16,22 +16,28 @@ else
 fi
 PAGER=less
 
+prompt='$'
+if [ `id -u` -eq 0 ]; then
+  pclr=31
+  prompt='#'
+fi
+
+if [ -r /etc/debian_chroot ]; then
+  hostname="`cat /etc/debian_chroot`"
+  pclr=33
+else
+  hostname="`hostname -s`"
+  pclr=32
+fi
+
 # Bash specific section
 if [ ! -z "$BASH" ]; then
-  if [ `id -u` -eq 0 ]; then
-    PS1="\[\e[0;31m\]\u@\h \[\e[1;34m\]\W {\!}# \[\e[0m\]"
-  else
-    PS1="\[\e[0;32m\]\u@\h \[\e[1;34m\]\W {\!}$ \[\e[0m\]"
-  fi
+  PS1="\[\e[0;${pclr}m\]\u@${hostname} \[\e[1;34m\]\W {\!}${prompt} \[\e[0m\]"
   shopt -s checkwinsize
   complete -r
   unset -f command_not_found_handle
 else
-  if [ `id -u` -eq 0 ]; then
-    PS1="${USER}@`hostname` \\# "
-  else
-    PS1="${USER}@`hostname` \\$ "
-  fi
+  PS1="${USER}@${hostname} ${prompt} "
 fi
 
 export HISTCONTROL
