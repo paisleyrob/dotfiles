@@ -27,7 +27,7 @@ if [ -r /etc/debian_chroot ]; then
   pclr=33
 else
   hostname="`hostname -s`"
-  pclr=32
+  pclr=${pclr:=32}
 fi
 
 # Bash specific section
