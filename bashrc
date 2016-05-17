@@ -25,6 +25,14 @@ fi
 if [ -r /etc/debian_chroot ]; then
   hostname="`cat /etc/debian_chroot`"
   pclr=33
+elif which zonename > /dev/null 2>&1; then
+  hostname="`hostname`"
+  zone="`zonename`"
+  if [ "$zone" != global ]; then
+    hostname="$hostname[$zone]"
+    pclr=${pclr:=33}
+  fi
+  pclr=${pclr:=32}
 else
   hostname="`hostname -s`"
   pclr=${pclr:=32}
