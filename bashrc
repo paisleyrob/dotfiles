@@ -48,6 +48,8 @@ else
   PS1="${USER}@${hostname} ${prompt} "
 fi
 
+unset hostname pclr prompt zone
+
 export HISTCONTROL
 export PS1
 export LANG
