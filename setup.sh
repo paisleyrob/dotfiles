@@ -3,7 +3,7 @@ set -e
 
 SCRIPT=`readlink -f "$0" 2> /dev/null || echo "${PWD}/$0"`
 SCRIPT_DIR=`dirname "$SCRIPT"`
-TPUT=`which tput`
+TPUT=`command -v tput`
 FILES="Xmodmap bashrc profile ratpoisonrc screenrc tmux.conf vim vimrc"
 EXECUTABLES="acpi ratpoison screen st stow vim wmname xset xsetroot xterm xtrlock"
 
@@ -40,12 +40,19 @@ linkfile() {
 }
 
 relpath() {
-    python -c "import os.path; print os.path.relpath('$1','$2')"
+    if command -v python > /dev/null; then
+        python -c "import os.path; print os.path.relpath('$1','$2')"
+    else
+        # Some versions of /bin/sh won't substitute on $1/$2 arguments
+        _b="$1"
+        _r="$2"
+        echo ${_b##${_r}/}
+    fi
 }
 
 for exe in ${EXECUTABLES}; do
     printf "Validating presence of %-40s" "${exe} ..."
-    location=`which ${exe}` || :
+    location=`command -v ${exe}` || :
     if [ ! -z "$location" ]; then
         printf "%s%s%s\n" "`colorize setaf 2`" "$location" "`colorize sgr0`"
     else
